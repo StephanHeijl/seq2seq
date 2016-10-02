@@ -90,4 +90,4 @@ def get_state_transfer_rnn(RNN):
 
 StateTransferSimpleRNN = get_state_transfer_rnn(SimpleRNN)
 StateTransferGRU = get_state_transfer_rnn(GRU)
-StateTransferLSTM = get_state_transfer_rnn(LSTM)
+StateTransferLSTM = get_state_transfer_rnn(GRU)

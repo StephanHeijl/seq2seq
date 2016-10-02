@@ -92,9 +92,9 @@ class LSTMDecoder(StateTransferLSTM):
         return initial_states
 
     def step(self, x, states):
-        assert len(states) == 5, len(states)
+        assert len(states) == 4, len(states)
         states = list(states)
-        y_tm1 = states.pop(2)
+        y_tm1 = states.pop(1)
         output_dim = self.output_dim
         self.output_dim = self.hidden_dim
         h_t, new_states = super(LSTMDecoder, self).step(y_tm1, states)
@@ -142,7 +142,7 @@ class LSTMDecoder(StateTransferLSTM):
         return tuple(output_shape)
 
     def get_config(self):
-        config = {'name': self.__class__.__name__, 
+        config = {'name': self.__class__.__name__,
         'hidden_dim': self.hidden_dim,
         'output_length': self.output_length}
         base_config = super(LSTMDecoder, self).get_config()
@@ -158,7 +158,7 @@ class LSTMDecoder2(LSTMDecoder):
     Basic equation:
         y(t) = LSTM(s(t-1), y(t-1), C)
         y(0) = LSTM(s0, C, C)
-        Where s is the hidden state of the LSTM (h and c), and C is the context vector 
+        Where s is the hidden state of the LSTM (h and c), and C is the context vector
         from the encoder.
 
     '''
@@ -211,7 +211,7 @@ class AttentionDecoder(LSTMDecoder2):
 
     The encoder outputs a hidden state at each timestep H = {h0, h1, h2,....hm-1}
 
-    The decoder uses H to generate a sequence of vectors Y = {y0, y1, y2,....yn-1}, 
+    The decoder uses H to generate a sequence of vectors Y = {y0, y1, y2,....yn-1},
     where n = output_length
 
     Decoder equations:
@@ -224,7 +224,7 @@ class AttentionDecoder(LSTMDecoder2):
         v(i) =  sigma(j = 0 to m-1)  alpha[i, j] * hj
 
         The weight alpha(i, j) for each hj is computed as follows:
-        energy = a(s(i-1), hj)       
+        energy = a(s(i-1), hj)
         alhpa = softmax(energy)
         Where a is a feed forward network.
     '''
